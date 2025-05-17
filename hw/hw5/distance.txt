@@ -1,0 +1,45 @@
+* 100
+- Packets sent:         140
+- Packets delivered:    0
+- Delivery percentage:  0%
+- Total BytesSent:      3.10456e+07
+- Total BytesReceived:  4.49987e+07
+- Total PacketsSent:    30318
+- Total PacketsReceived:        43944
+- Average End-to-End Delay:     -nan
+* 200
+- Packets sent:         140
+- Packets delivered:    73
+- Delivery percentage:  52.1429%
+- Total BytesSent:      3.15474e+07
+- Total BytesReceived:  1.78625e+08
+- Total PacketsSent:    30808
+- Total PacketsReceived:        174511
+- Average End-to-End Delay:     4.79615
+* 300
+- Packets sent:         140
+- Packets delivered:    127
+- Delivery percentage:  90.7143%
+- Total BytesSent:      3.11859e+07
+- Total BytesReceived:  3.93032e+08
+- Total PacketsSent:    30455
+- Total PacketsReceived:        383947
+- Average End-to-End Delay:     2.45893
+* 400
+- Packets sent:         140
+- Packets delivered:    127
+- Delivery percentage:  90.7143%
+- Total BytesSent:      3.10323e+07
+- Total BytesReceived:  6.73614e+08
+- Total PacketsSent:    30305
+- Total PacketsReceived:        657953
+- Average End-to-End Delay:     1.31391
+* 500
+- Packets sent:         140
+- Packets delivered:    130
+- Delivery percentage:  92.8571%
+- Total BytesSent:      3.09965e+07
+- Total BytesReceived:  9.95633e+08
+- Total PacketsSent:    30270
+- Total PacketsReceived:        972428
+- Average End-to-End Delay:     1.0329

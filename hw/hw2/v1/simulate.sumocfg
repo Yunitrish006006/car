@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+    <input>
+        <net-file value="M1354020_HW2_v1.net.xml"/>
+        <route-files value="dua.rou.xml"/>
+        <additional-files value="output_setting.xml"/>
+    </input>
+</configuration>
