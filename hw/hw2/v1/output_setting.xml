@@ -1,4 +1,0 @@
-<add>
-  <edgeData id="01" freq="1800" file="edgedata.xml" excludeEmpty="true" />
-  <laneData id="02" freq="1800" file="lanedata.xml" excludeEmpty="true" />
-</add>
