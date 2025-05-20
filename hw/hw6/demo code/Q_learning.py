@@ -4,15 +4,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 import time
+from tqdm import tqdm
+from numba import jit
 try:
-    from numba import jit
+    
     HAS_NUMBA = True
 except ImportError:
     HAS_NUMBA = False
     print("Numba not found, running without JIT acceleration")
 
 try:
-    from tqdm import tqdm
     HAS_TQDM = True
 except ImportError:
     HAS_TQDM = False
@@ -50,8 +51,16 @@ class State:
             nxtState = (self.state[0] + 1, self.state[1])  # down
         elif action == 2:
             nxtState = (self.state[0], self.state[1] - 1)  # left
-        else:
+        elif action == 3:
             nxtState = (self.state[0], self.state[1] + 1)  # right
+        elif action == 4:
+            nxtState = (self.state[0] - 1, self.state[1] - 1)  # up-left
+        elif action == 5:
+            nxtState = (self.state[0] - 1, self.state[1] + 1)  # up-right
+        elif action == 6:
+            nxtState = (self.state[0] + 1, self.state[1] - 1)  # down-left
+        elif action == 7:
+            nxtState = (self.state[0] + 1, self.state[1] + 1)  # down-right
 
         if (nxtState[0] >= 0) and (nxtState[0] < BOARD_ROWS) and (nxtState[1] >= 0) and (nxtState[1] < BOARD_COLS):
             return nxtState
@@ -63,7 +72,7 @@ class State:
 class OptimizedAgent:
     def __init__(self):
         # initialize states and actions
-        self.actions = [0, 1, 2, 3]  # up, down, left, right
+        self.actions = [0, 1, 2, 3, 4, 5, 6, 7]  # up, down, left, right, up-left, up-right, down-left, down-right
         self.State = State()
         self.alpha = 0.8
         self.epsilon = 0.5
@@ -73,8 +82,8 @@ class OptimizedAgent:
         self.plot_reward = []
 
         # initialize Q values as numpy arrays for faster access
-        self.Q = np.zeros((BOARD_ROWS, BOARD_COLS, 4))
-        self.new_Q = np.zeros((BOARD_ROWS, BOARD_COLS, 4))
+        self.Q = np.zeros((BOARD_ROWS, BOARD_COLS, 8))
+        self.new_Q = np.zeros((BOARD_ROWS, BOARD_COLS, 8))
         self.rewards = 0
         
         # Pre-load discount factors to avoid pandas lookups in the loop
@@ -83,14 +92,14 @@ class OptimizedAgent:
     def load_discount_factors(self, path):
         """Pre-load all discount factors into a numpy array for faster access"""
         df = pd.read_csv(path, index_col="Grid 座標")
-        self.discount_factors = np.zeros((BOARD_ROWS, BOARD_COLS, 4))
+        self.discount_factors = np.zeros((BOARD_ROWS, BOARD_COLS, 8))
         
         for i in range(BOARD_ROWS):
             for j in range(BOARD_COLS):
                 idx = f"{i}_{j}"
                 if idx in df.index:
                     factors = df.loc[idx, "discount factor"].split("/")
-                    for a in range(4):
+                    for a in range(8):  # 8 directions
                         self.discount_factors[i, j, a] = float(factors[a])
         
         print("Discount factors loaded successfully")
@@ -216,7 +225,7 @@ class OptimizedAgent:
     def showBestPath(self):
         """Display the best path strategy"""
         print("\n===== Best Path Strategy =====")
-        direction = {0: '↑', 1: '↓', 2: '←', 3: '→'}
+        direction = {0: '↑', 1: '↓', 2: '←', 3: '→', 4: '↖', 5: '↗', 6: '↙', 7: '↘'}
         path_grid = [[' ' for _ in range(BOARD_COLS)] for _ in range(BOARD_ROWS)]
         
         for i in range(BOARD_ROWS):
@@ -326,7 +335,7 @@ if __name__ == "__main__":
     ag = OptimizedAgent()
     ag.load_discount_factors("hw/hw6/demo code/discount_factor.csv")
     
-    filename = "q_table_optimized"
+    filename = "q_table"
     q_value = np.zeros(4, dtype=np.float64)
     
     print(f"Start: {START}, Goal: {WIN_STATE}")
@@ -341,7 +350,7 @@ if __name__ == "__main__":
     ag.showValues(q_value)
     np.save(os.path.join(filename), q_value)
     ag.showBestPath()
-    ag.saveQTable("full_q_table_optimized.npy")
+    ag.saveQTable("q_table.npy")
     
     # Test epsilon performance
     test_epsilon_performance()

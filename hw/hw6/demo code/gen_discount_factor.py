@@ -4,7 +4,7 @@ import os
 
 def generate_discount_factors():
     rows, cols = 8, 10
-    actions = 4  # up, down, left, right
+    actions = 8  # up, down, left, right, up-left, up-right, down-left, down-right
 
     data = []
     for i in range(rows):
